@@ -16,8 +16,19 @@ public class MarkdownParse {
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
-            currentIndex = closeParen + 1;
+            if (openBracket == -1){
+                // return if there isn't a new entry
+                break;
+            } 
+            if (closeBracket == -1 || openParen == -1 || closeParen == -1) {
+                // it is missing any other parts
+                int maxIdex = Math.max(Math.max(openBracket, closeBracket), Math.max(openParen, closeParen));
+                currentIndex = maxIdex + 1;
+            }else{
+                // valid case
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+                currentIndex = closeParen + 1;
+            }
         }
 
         return toReturn;
